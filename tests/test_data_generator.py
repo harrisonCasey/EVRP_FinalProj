@@ -2,7 +2,7 @@ import pytest
 import random
 import csv
 
-from data_generator import (
+from src.data_generator import (
     generate_vehicles,
     generate_depots,
     generate_charging_stations,

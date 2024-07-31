@@ -1,10 +1,10 @@
 import pytest
-from models.vehicle import Vehicle
-from models.depot import Depot
-from models.customer import Customer
-from models.charging_station import ChargingStation
-from models.fuel_station import FuelStation
-from algorithms.milp import MILPOptimization
+from src.models.vehicle import Vehicle
+from src.models.depot import Depot
+from src.models.customer import Customer
+from src.models.charging_station import ChargingStation
+from src.models.fuel_station import FuelStation
+from src.algorithms.milp import MILPOptimization
 
 # Define a fixture to provide mock data for the tests
 @pytest.fixture

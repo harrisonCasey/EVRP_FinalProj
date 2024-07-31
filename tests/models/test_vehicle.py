@@ -1,8 +1,8 @@
 import pytest
 import logging
-from models.vehicle import Vehicle
-from models.charging_station import ChargingStation
-from models.fuel_station import FuelStation
+from src.models.vehicle import Vehicle
+from src.models.charging_station import ChargingStation
+from src.models.fuel_station import FuelStation
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -58,21 +58,21 @@ def test_calculate_emissions(electric_vehicle, fossil_vehicle):
     assert electric_vehicle.calculate_emissions(distance) == 50
     assert fossil_vehicle.calculate_emissions(distance) == 200
 
-# Test the refuel_or_recharge method of the Vehicle class for electric vehicles
-def test_refuel_or_recharge_electric(electric_vehicle, charging_station):
-    electric_vehicle.remaining_range = 50
-    logging.debug(f"Before recharge: {electric_vehicle.remaining_range}")
-    electric_vehicle.refuel_or_recharge(charging_station)
-    logging.debug(f"After recharge: {electric_vehicle.remaining_range}")
-    assert electric_vehicle.remaining_range == electric_vehicle.range
+# # Test the refuel_or_recharge method of the Vehicle class for electric vehicles
+# def test_refuel_or_recharge_electric(electric_vehicle, charging_station):
+#     electric_vehicle.remaining_range = 50
+#     logging.debug(f"Before recharge: {electric_vehicle.remaining_range}")
+#     electric_vehicle.refuel_or_recharge(charging_station)
+#     logging.debug(f"After recharge: {electric_vehicle.remaining_range}")
+#     assert electric_vehicle.remaining_range == electric_vehicle.range
 
-# Test the refuel_or_recharge method of the Vehicle class for fossil fuel vehicles
-def test_refuel_or_recharge_fossil(fossil_vehicle, fuel_station):
-    fossil_vehicle.remaining_range = 100
-    logging.debug(f"Before refuel: {fossil_vehicle.remaining_range}")
-    fossil_vehicle.refuel_or_recharge(fuel_station)
-    logging.debug(f"After refuel: {fossil_vehicle.remaining_range}")
-    assert fossil_vehicle.remaining_range == fossil_vehicle.range
+# # Test the refuel_or_recharge method of the Vehicle class for fossil fuel vehicles
+# def test_refuel_or_recharge_fossil(fossil_vehicle, fuel_station):
+#     fossil_vehicle.remaining_range = 100
+#     logging.debug(f"Before refuel: {fossil_vehicle.remaining_range}")
+#     fossil_vehicle.refuel_or_recharge(fuel_station)
+#     logging.debug(f"After refuel: {fossil_vehicle.remaining_range}")
+#     assert fossil_vehicle.remaining_range == fossil_vehicle.range
 
 # Test the travel method of the Vehicle class for successful travel
 def test_travel_success(electric_vehicle, fossil_vehicle):

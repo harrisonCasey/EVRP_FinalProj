@@ -1,12 +1,12 @@
 import pytest
 import pandas as pd
 from unittest.mock import patch, MagicMock
-from models.vehicle import Vehicle
-from models.depot import Depot
-from models.customer import Customer
-from models.charging_station import ChargingStation
-from models.fuel_station import FuelStation
-from data_parser import parse_data
+from src.models.vehicle import Vehicle
+from src.models.depot import Depot
+from src.models.customer import Customer
+from src.models.charging_station import ChargingStation
+from src.models.fuel_station import FuelStation
+from src.data_parser import parse_data
 
 # Define fixtures for mock dataframes
 

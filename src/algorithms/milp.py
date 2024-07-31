@@ -84,7 +84,7 @@ class MILPOptimization:
             prob += pulp.lpSum(x[v][d][i] for d in range(num_depots) for i in range(num_locations) if d != i) == 1
             prob += pulp.lpSum(x[v][i][d] for d in range(num_depots) for i in range(num_locations) if d != i) == 1
 
-        # Each vehicle must visit at least one customer if it is used
+        # Each vehicle must visit at least one customer if it is used ------- Edge case when v > c? Don't want depot to depot travel, if we use veicle ust at least visit once customer, if we put a vehcile in model to test => customrs, optimisation is not great.
         for v in range(num_vehicles):
             prob += pulp.lpSum(x[v][i][j] for i in range(num_depots) for j in range(num_depots, num_locations)) >= 1
 
