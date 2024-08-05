@@ -147,7 +147,7 @@ class SimulatedAnnealingOptimization:
         elif self.optimization_criteria == 'emissions':
             return self.calculate_total_emissions(solution)
         elif self.optimization_criteria == 'time':
-            return self.calculate_total_delivery_time(solution)
+            return self.calculate_parallel_delivery_time(solution)
         else:
             raise ValueError("Invalid optimization criteria")
 
@@ -257,29 +257,6 @@ class SimulatedAnnealingOptimization:
                 total_emissions += vehicle.calculate_emissions(distance)
         return total_emissions
 
-    def calculate_total_delivery_time(self, solution):
-        """
-        Calculates the total delivery time for the solution.
-
-        Args:
-            solution (dict): The solution to evaluate.
-
-        Returns:
-            float: The total delivery time taken.
-        """
-        total_distance = self.calculate_total_distance(solution)
-        total_delivery_time = total_distance
-        for vehicle_id, route in solution.items():
-            vehicle = self.vehicles[vehicle_id]
-            for i in range(len(route) - 1):
-                if isinstance(route[i + 1], (ChargingStation, FuelStation)):
-                    if vehicle.vehicle_type == 'electric' and vehicle.port_type == 'fast':
-                        total_delivery_time += vehicle.recharge_time * 0.5
-                    elif vehicle.vehicle_type == 'electric' and vehicle.port_type == 'super':
-                        total_delivery_time += vehicle.recharge_time * 0.25
-                    else:
-                        total_delivery_time += vehicle.recharge_time
-        return total_delivery_time
 
     def calculate_distance(self, point1, point2):
         """

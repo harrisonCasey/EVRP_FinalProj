@@ -4,7 +4,7 @@
     "num_depots": 2,
     "num_charging_stations": 3,
     "num_fuel_stations": 3,
-    "num_customers": 10,
+    "num_customers": 5,
     "grid_size": [100, 100],
     "fuel_station_types": ["standard", "premium"]
 }
