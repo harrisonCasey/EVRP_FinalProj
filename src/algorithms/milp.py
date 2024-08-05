@@ -1,6 +1,7 @@
 import pulp
 import logging
 from itertools import product
+from models import FuelStation, ChargingStation
 
 class MILPOptimization:
     def __init__(self, depots, customers, vehicles, charging_stations, fuel_stations, optimization_criteria, initial_solution=None):
@@ -128,6 +129,26 @@ class MILPOptimization:
                     nearest_station_distance = self.find_nearest_station_distance(j, self.vehicles[k])
                     problem += (self.distance_matrix[i][j] * x[i][j][k] <= vehicle_range - nearest_station_distance, f"RangeConstraint_{k}_{i}_{j}")
 
+        # Prohibit electric vehicles from visiting fuel stations and vice versa
+        for k in range(num_vehicles):
+            for i in range(num_locations):
+                if self.vehicles[k].vehicle_type == 'electric' and isinstance(self.locations[i], FuelStation):
+                    for j in range(num_locations):
+                        problem += x[i][j][k] == 0, f"ElectricVehicleNoFuelStation_{k}_{i}_{j}_ij"
+                        problem += x[j][i][k] == 0, f"ElectricVehicleNoFuelStation_{k}_{j}_{i}_ji"
+                elif self.vehicles[k].vehicle_type == 'fossil' and isinstance(self.locations[i], ChargingStation):
+                    for j in range(num_locations):
+                        problem += x[i][j][k] == 0, f"FossilVehicleNoChargingStation_{k}_{i}_{j}_ij"
+                        problem += x[j][i][k] == 0, f"FossilVehicleNoChargingStation_{k}_{j}_{i}_ji"
+
+        # Ensure a vehicle does not visit both types of stations within its route
+        for k in range(num_vehicles):
+            for i in range(num_locations):
+                for j in range(num_locations):
+                    for m in range(num_locations):
+                        if isinstance(self.locations[i], FuelStation) and isinstance(self.locations[m], ChargingStation):
+                            problem += x[i][j][k] + x[j][m][k] <= 1, f"ProhibitBothStations_{k}_{i}_{j}_{m}_ijm"
+                            
         # Initial solution constraints (if provided)
         if self.initial_solution:
             for k, route in self.initial_solution.items():
@@ -137,7 +158,7 @@ class MILPOptimization:
                     problem += x[loc_i][loc_j][k] == 1, f"InitialSolution_{k}_{loc_i}_{loc_j}"
 
         # Solver with verbosity and logging intermediate solutions
-        solver = pulp.PULP_CBC_CMD(msg=False, timeLimit=180)  # Set a time limit and a higher relative gap for faster solutions
+        solver = pulp.PULP_CBC_CMD(msg=False)  #timelimit=x Set a time limit and a higher relative gap for faster solutions
         logging.info("Solving the MILP problem with CBC solver...")
         problem.solve(solver)
 

@@ -1,9 +1,9 @@
 {
-    "num_electric_vehicles": 3,
-    "num_fossil_vehicles": 10,
-    "num_depots": 2,
-    "num_charging_stations": 3,
-    "num_fuel_stations": 3,
+    "num_electric_vehicles": 2,
+    "num_fossil_vehicles": 2,
+    "num_depots": 1,
+    "num_charging_stations": 2,
+    "num_fuel_stations": 2,
     "num_customers": 5,
     "grid_size": [100, 100],
     "fuel_station_types": ["standard", "premium"]
